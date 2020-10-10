@@ -2,10 +2,18 @@
   "name": "Shortcuts",
   "version": "1.0",
   "description": "Text shortcuts",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": ["tabs", "http://*/", "https://*/", "declarativeContent", "storage"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
+  },
+  "commands": {
+    "paste-msg-1": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+1"
+      },
+      "description": "Example 1"
+    }
   },
   "page_action": {
     "default_popup": "popup.html",

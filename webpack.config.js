@@ -6,8 +6,9 @@ module.exports = (env, options) => {
   return {
     entry: {
       background: './src/background.ts',
-      options: './src/options.ts',
-      popup: './src/popup.ts',
+      options: './src/options.tsx',
+      popup: './src/popup.tsx',
+      ['key-listener']: './src/key-listener.ts',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -44,6 +45,7 @@ module.exports = (env, options) => {
       hot: true,
       port: 4000,
       publicPath: '/',
+      openPage: 'options.html',
     },
     devtool: options.mode === 'production' ? false : 'source-map',
     plugins: [
