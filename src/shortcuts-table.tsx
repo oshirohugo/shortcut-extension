@@ -12,9 +12,10 @@ import { StoredShortcutValue, ShortcutObj } from './types';
 type Props = {
   shortcuts: StoredShortcutValue[];
   onShortcutDelete: (shortcutObject: ShortcutObj) => void;
+  onShortcutEdit: (shortcutObject: StoredShortcutValue) => void;
 };
 
-function ShortcutsTable({ shortcuts, onShortcutDelete }: Props) {
+function ShortcutsTable({ shortcuts, onShortcutDelete, onShortcutEdit }: Props) {
   return (
     <Table>
       <TableHead>
@@ -30,7 +31,12 @@ function ShortcutsTable({ shortcuts, onShortcutDelete }: Props) {
       </TableHead>
       <TableBody>
         {shortcuts.map((shortcut) => (
-          <Shortcut key={shortcut.created} data={shortcut} onDelete={onShortcutDelete} />
+          <Shortcut
+            key={shortcut.created}
+            data={shortcut}
+            onDelete={onShortcutDelete}
+            onEdit={onShortcutEdit}
+          />
         ))}
       </TableBody>
     </Table>

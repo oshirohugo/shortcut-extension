@@ -25,9 +25,10 @@ const useStyles = makeStyles({
 type Props = {
   data: StoredShortcutValue;
   onDelete: (shortcutObject: ShortcutObj) => void;
+  onEdit: (data: StoredShortcutValue) => void;
 };
 
-function Shortcut({ data, onDelete }: Props) {
+function Shortcut({ data, onDelete, onEdit }: Props) {
   const classes = useStyles();
   const [actionsAnchorEl, setActionsAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -44,6 +45,11 @@ function Shortcut({ data, onDelete }: Props) {
 
   const handleDelete = () => {
     onDelete(data.shortcutObject);
+    handleActionsClose();
+  };
+
+  const handleEdit = () => {
+    onEdit(data);
     handleActionsClose();
   };
 
@@ -65,6 +71,7 @@ function Shortcut({ data, onDelete }: Props) {
           anchorEl={actionsAnchorEl}
           handleClose={handleActionsClose}
           handleDelete={handleDelete}
+          handleEdit={handleEdit}
         />
       </TableCell>
     </TableRow>

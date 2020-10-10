@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,18 +6,27 @@ import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 
-import { ShortcutObj } from './types';
+import { ShortcutObj, StoredShortcutValue } from './types';
 
 type Props = {
   open: boolean;
   handleClose: () => void;
-  handleAdd: (shortcutObject: ShortcutObj, text: string) => void;
+  handleSave: (shortcutObject: ShortcutObj, text: string) => void;
+  data?: StoredShortcutValue;
 };
 
-function AddShortcutDialog({ open, handleClose, handleAdd }: Props) {
+function ShortcutDialog({ open, handleClose, handleSave, data }: Props) {
   const [keyCombination, setKeyCombination] = useState<string>('');
-  const [shortcutObject, setShortcutObject] = useState<any>();
-  const [text, setText] = useState<string>('');
+  const [shortcutObject, setShortcutObject] = useState<ShortcutObj>();
+  const [text, setText] = useState<string>(data?.text || '');
+
+  useEffect(() => {
+    const existingCombination = data
+      ? `Control${data.shortcutObject.shift ? ' + shift' : ''} + ${data.shortcutObject.key}`
+      : '';
+    setKeyCombination(existingCombination);
+    setText(data?.text || '');
+  }, [data]);
 
   const onKeyDown = (e: any) => {
     // To avoid conflicts with chrome keyboard shortcuts, we only
@@ -52,15 +61,30 @@ function AddShortcutDialog({ open, handleClose, handleAdd }: Props) {
     setText(event.target.value);
   };
 
-  const onAdd = () => {
-    handleAdd(shortcutObject, text);
+  const resetDialogState = () => {
+    setKeyCombination('');
+    setShortcutObject(undefined);
+    setText('');
+  };
+
+  const onSave = () => {
+    if (shortcutObject) {
+      handleSave(shortcutObject, text);
+    }
+    resetDialogState();
+  };
+
+  const onCancel = () => {
+    handleClose();
+    resetDialogState();
   };
 
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Shortcut</DialogTitle>
+      <DialogTitle id="form-dialog-title">{data ? 'Edit' : 'Add'} Shortcut</DialogTitle>
       <DialogContent>
         <TextField
+          disabled={Boolean(data)}
           autoFocus
           margin="dense"
           id="keys"
@@ -86,10 +110,10 @@ function AddShortcutDialog({ open, handleClose, handleAdd }: Props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={onCancel} color="primary">
           Cancel
         </Button>
-        <Button onClick={onAdd} color="primary">
+        <Button onClick={onSave} color="primary">
           Save
         </Button>
       </DialogActions>
@@ -97,4 +121,4 @@ function AddShortcutDialog({ open, handleClose, handleAdd }: Props) {
   );
 }
 
-export default AddShortcutDialog;
+export default ShortcutDialog;

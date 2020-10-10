@@ -10,9 +10,10 @@ type Props = {
   anchorEl: HTMLElement | null;
   handleClose: () => void;
   handleDelete: () => void;
+  handleEdit: () => void;
 };
 
-function ActionsMenu({ anchorEl, handleClose, handleDelete }: Props) {
+function ActionsMenu({ anchorEl, handleClose, handleDelete, handleEdit }: Props) {
   return (
     <Menu
       id="simple-menu"
@@ -21,7 +22,7 @@ function ActionsMenu({ anchorEl, handleClose, handleDelete }: Props) {
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleEdit}>
         <ListItemIcon>
           <EditIcon />
         </ListItemIcon>

@@ -6,9 +6,9 @@ import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-import AddShortcutDialog from './add-shortcut-dialog';
+import ShortcutDialog from './shortcut-dialog';
 import ShortcutsTable from './shortcuts-table';
-import { StoredShortcut, ShortcutObj } from './types';
+import { StoredShortcut, ShortcutObj, StoredShortcutValue } from './types';
 import { shortcutObjectMock } from './shortcut-mock'; // TODO remove this
 
 const useStyles = makeStyles({
@@ -34,8 +34,10 @@ const useStyles = makeStyles({
 function Options() {
   const classes = useStyles();
   const [openShortcutDialog, setOpenShortcutDialog] = useState(false);
+  const [dataToEdit, setDataToEdit] = useState<StoredShortcutValue | undefined>();
 
   const handleShortcutDialogClose = () => {
+    setDataToEdit(undefined);
     setOpenShortcutDialog(false);
   };
 
@@ -45,7 +47,7 @@ function Options() {
 
   const [shortcuts, setShortcuts] = useState<StoredShortcut>(shortcutObjectMock);
 
-  const handleShortcutAdd = (shortcutObject: ShortcutObj, text: string) => {
+  const handleShortcutSave = (shortcutObject: ShortcutObj, text: string) => {
     const { shift, keyCode, numpad } = shortcutObject;
     const newShortcuts = {
       ...shortcuts,
@@ -55,10 +57,11 @@ function Options() {
     if (chrome.storage) {
       chrome.storage.sync.set({ shortcuts: newShortcuts }, handleShortcutDialogClose);
     }
+    setDataToEdit(undefined);
     handleShortcutDialogClose();
   };
 
-  const onShortcutDelete = (shortcutObject: ShortcutObj) => {
+  const onShortcutDeleteClick = (shortcutObject: ShortcutObj) => {
     const { shift, keyCode, numpad } = shortcutObject;
     const shortcutHash = `${shift}${keyCode}${numpad}`;
     const newShortcuts = { ...shortcuts };
@@ -69,6 +72,11 @@ function Options() {
     if (chrome.storage) {
       chrome.storage.sync.set({ shortcuts: newShortcuts });
     }
+  };
+
+  const onShortcutEdit = (shortcutData: StoredShortcutValue) => {
+    setDataToEdit(shortcutData);
+    setOpenShortcutDialog(true);
   };
 
   useEffect(() => {
@@ -89,7 +97,11 @@ function Options() {
         <Typography variant="h4">Stored Shortcuts</Typography>
         <Paper>
           {shortcutsArray.length ? (
-            <ShortcutsTable shortcuts={shortcutsArray} onShortcutDelete={onShortcutDelete} />
+            <ShortcutsTable
+              shortcuts={shortcutsArray}
+              onShortcutDelete={onShortcutDeleteClick}
+              onShortcutEdit={onShortcutEdit}
+            />
           ) : (
             <Typography color="textSecondary" className={classes.emptyMessage}>
               No shortcuts stored. Click the button to add a shortcut.
@@ -104,10 +116,11 @@ function Options() {
         >
           <AddIcon />
         </Fab>
-        <AddShortcutDialog
+        <ShortcutDialog
           open={openShortcutDialog}
-          handleAdd={handleShortcutAdd}
+          handleSave={handleShortcutSave}
           handleClose={handleShortcutDialogClose}
+          data={dataToEdit}
         />
       </div>
     </section>
