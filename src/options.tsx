@@ -120,6 +120,7 @@ function Options() {
           open={openShortcutDialog}
           handleSave={handleShortcutSave}
           handleClose={handleShortcutDialogClose}
+          shortcuts={shortcuts}
           data={dataToEdit}
         />
       </div>

@@ -6,19 +6,21 @@ import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 
-import { ShortcutObj, StoredShortcutValue } from './types';
+import { ShortcutObj, StoredShortcut, StoredShortcutValue } from './types';
 
 type Props = {
   open: boolean;
   handleClose: () => void;
   handleSave: (shortcutObject: ShortcutObj, text: string) => void;
+  shortcuts: StoredShortcut;
   data?: StoredShortcutValue;
 };
 
-function ShortcutDialog({ open, handleClose, handleSave, data }: Props) {
+function ShortcutDialog({ open, handleClose, handleSave, shortcuts, data }: Props) {
   const [keyCombination, setKeyCombination] = useState<string>('');
   const [shortcutObject, setShortcutObject] = useState<ShortcutObj>();
   const [text, setText] = useState<string>(data?.text || '');
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const existingCombination = data
@@ -51,9 +53,19 @@ function ShortcutDialog({ open, handleClose, handleSave, data }: Props) {
 
       setShortcutObject(shortcut);
       setKeyCombination(keyPressed);
+
+      const shortcutHash = `${shortcut.shift}${shortcut.keyCode}${shortcut.numpad}`;
+
+      // if shortcut is already stored, show and error
+      if (shortcuts[shortcutHash]) {
+        setError(`${keyPressed} is already in use`);
+      } else {
+        setError('');
+      }
     }
     if (e.key === 'Backspace') {
       setKeyCombination('');
+      setError('');
     }
   };
 
@@ -79,6 +91,8 @@ function ShortcutDialog({ open, handleClose, handleSave, data }: Props) {
     resetDialogState();
   };
 
+  const isSaveDisabled = () => !(text && keyCombination) || Boolean(error);
+
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{data ? 'Edit' : 'Add'} Shortcut</DialogTitle>
@@ -95,7 +109,8 @@ function ShortcutDialog({ open, handleClose, handleSave, data }: Props) {
           placeholder="Press your key combination"
           value={keyCombination}
           variant="outlined"
-          helperText="Only ctrl + shift + <digit> and ctrl + <numpad-digit> are accepted"
+          helperText={error || 'Only ctrl + shift + <digit> and ctrl + <numpad-digit> are accepted'}
+          error={Boolean(error)}
         />
         <TextField
           multiline
@@ -113,7 +128,7 @@ function ShortcutDialog({ open, handleClose, handleSave, data }: Props) {
         <Button onClick={onCancel} color="primary">
           Cancel
         </Button>
-        <Button onClick={onSave} color="primary">
+        <Button onClick={onSave} color="primary" disabled={isSaveDisabled()}>
           Save
         </Button>
       </DialogActions>
