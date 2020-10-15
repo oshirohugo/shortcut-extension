@@ -2,17 +2,37 @@ const mockText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed d
 
 Eu non diam phasellus vestibulum lorem sed risus ultricies tristique. Nibh ipsum consequat nisl vel pretium lectus quam. Odio eu feugiat pretium nibh ipsum consequat nisl. Ut placerat orci nulla pellentesque dignissim. Nunc non blandit massa enim nec. Purus in mollis nunc sed id semper. Adipiscing elit duis tristique sollicitudin. Quam lacus suspendisse faucibus interdum. Lobortis mattis aliquam faucibus purus in. Purus sit amet luctus venenatis lectus. Non arcu risus quis varius. Enim lobortis scelerisque fermentum dui faucibus in. Interdum velit laoreet id donec ultrices tincidunt arcu non.`;
 
-// export const shortcutObjectMock = {
-//   trueDigit1false: {
-//     text: mockText,
-//     shortcutObject: {
-//       shift: true,
-//       keyCode: 'Digit1',
-//       key: '1',
-//       numpad: false,
-//     },
-//     created: 1602343637058,
-//   },
-// };
+export const shortcutObjectMock = {
+  trueDigit1false: {
+    text: mockText,
+    shortcutObject: {
+      shift: true,
+      keyCode: 'Digit1',
+      key: '1',
+      numpad: false,
+    },
+    created: 1602343637058,
+  },
+  trueDigit3false: {
+    text: mockText,
+    shortcutObject: {
+      shift: true,
+      keyCode: 'Digit3',
+      key: '3',
+      numpad: false,
+    },
+    created: 1602343637059,
+  },
+  trueDigit4false: {
+    text: mockText,
+    shortcutObject: {
+      shift: true,
+      keyCode: 'Digit4',
+      key: '4',
+      numpad: false,
+    },
+    created: 1602343637060,
+  },
+};
 
-export const shortcutObjectMock = {};
+// export const shortcutObjectMock = {};

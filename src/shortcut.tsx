@@ -26,9 +26,11 @@ type Props = {
   data: StoredShortcutValue;
   onDelete: (shortcutObject: ShortcutObj) => void;
   onEdit: (data: StoredShortcutValue) => void;
+  onSelect: (shortcutObject: ShortcutObj) => void;
+  selected: boolean;
 };
 
-function Shortcut({ data, onDelete, onEdit }: Props) {
+function Shortcut({ data, onDelete, onEdit, onSelect, selected }: Props) {
   const classes = useStyles();
   const [actionsAnchorEl, setActionsAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -53,10 +55,14 @@ function Shortcut({ data, onDelete, onEdit }: Props) {
     handleActionsClose();
   };
 
+  const handleSelect = () => {
+    onSelect(data.shortcutObject);
+  };
+
   return (
     <TableRow>
       <TableCell>
-        <Checkbox />
+        <Checkbox onClick={handleSelect} checked={selected} />
       </TableCell>
       <TableCell>{`Control${shift ? ' + shift' : ''} + ${key}`}</TableCell>
       <Tooltip PopperProps={{ className: classes.textTooltip }} interactive title={text}>

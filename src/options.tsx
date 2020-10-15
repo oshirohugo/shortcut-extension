@@ -79,6 +79,18 @@ function Options() {
     setOpenShortcutDialog(true);
   };
 
+  const onDelete = (selectedShortcuts: Record<string, boolean>) => {
+    const hashes = Object.keys(selectedShortcuts);
+    const newShortcuts = { ...shortcuts };
+
+    hashes.forEach((hash) => delete newShortcuts[hash]);
+
+    setShortcuts(newShortcuts);
+    if (chrome.storage) {
+      chrome.storage.sync.set({ shortcuts: newShortcuts });
+    }
+  };
+
   useEffect(() => {
     if (chrome.storage) {
       chrome.storage.sync.get('shortcuts', (data) => {
@@ -101,6 +113,7 @@ function Options() {
               shortcuts={shortcutsArray}
               onShortcutDelete={onShortcutDeleteClick}
               onShortcutEdit={onShortcutEdit}
+              onSelectedDelete={onDelete}
             />
           ) : (
             <Typography color="textSecondary" className={classes.emptyMessage}>
