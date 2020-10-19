@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 
 import ShortcutDialog from './shortcut-dialog';
 import ShortcutsTable from './shortcuts-table';
-import { StoredShortcut, ShortcutObj, StoredShortcutValue } from './types';
+import { StoredShortcut, ShortcutObj, StoredShortcutValue } from '../types';
 import { shortcutObjectMock } from './shortcut-mock'; // TODO remove this
 
 const useStyles = makeStyles({

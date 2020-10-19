@@ -5,10 +5,10 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = (env, options) => {
   return {
     entry: {
-      background: './src/background.ts',
-      options: './src/options.tsx',
+      background: './src/background/background.ts',
+      options: './src/options/options.tsx',
       popup: './src/popup.tsx',
-      ['key-listener']: './src/key-listener.ts',
+      ['key-listener']: './src/background/key-listener.ts',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
