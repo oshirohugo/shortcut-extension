@@ -2,7 +2,7 @@
   "name": "Shortcuts",
   "version": "1.0",
   "description": "Text shortcuts",
-  "permissions": ["tabs", "http://*/", "https://*/", "declarativeContent", "storage"],
+  "permissions": ["activeTab", "tabs", "http://*/", "https://*/", "declarativeContent", "storage"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -15,7 +15,7 @@
       "description": "Example 1"
     }
   },
-  "page_action": {
+  "browser_action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "images/get_started16.png",

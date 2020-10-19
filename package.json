@@ -16,6 +16,9 @@
     "react-dom": "^16.13.1"
   },
   "scripts": {
+    "dev-options": "webpack-dev-server --mode development --open --hot --env.SCRIPT=options",
+    "dev-background": "webpack-dev-server --mode development --open --hot --env.SCRIPT=background",
+    "dev-popup": "webpack-dev-server --mode development --open --hot --env.SCRIPT=popup",
     "dev": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production"
   },

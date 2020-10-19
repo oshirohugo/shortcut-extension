@@ -45,7 +45,7 @@ module.exports = (env, options) => {
       hot: true,
       port: 4000,
       publicPath: '/',
-      openPage: 'options.html',
+      openPage: `${env ? env.SCRIPT : 'options'}.html`,
     },
     devtool: options.mode === 'production' ? false : 'source-map',
     plugins: [

@@ -53,10 +53,9 @@ function Options() {
       ...shortcuts,
       [`${shift}${keyCode}${numpad}`]: { text, shortcutObject, created: new Date().getTime() },
     };
+
     setShortcuts(newShortcuts);
-    if (chrome.storage) {
-      chrome.storage.sync.set({ shortcuts: newShortcuts }, handleShortcutDialogClose);
-    }
+    chrome.storage?.sync.set({ shortcuts: newShortcuts }, handleShortcutDialogClose);
     setDataToEdit(undefined);
     handleShortcutDialogClose();
   };
@@ -69,9 +68,7 @@ function Options() {
 
     setShortcuts(newShortcuts);
 
-    if (chrome.storage) {
-      chrome.storage.sync.set({ shortcuts: newShortcuts });
-    }
+    chrome.storage?.sync.set({ shortcuts: newShortcuts });
   };
 
   const onShortcutEdit = (shortcutData: StoredShortcutValue) => {
