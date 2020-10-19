@@ -37,7 +37,6 @@ function Options() {
   const [dataToEdit, setDataToEdit] = useState<StoredShortcutValue | undefined>();
 
   const handleShortcutDialogClose = () => {
-    setDataToEdit(undefined);
     setOpenShortcutDialog(false);
   };
 

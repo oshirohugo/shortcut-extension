@@ -26,6 +26,7 @@ function ShortcutDialog({ open, handleClose, handleSave, shortcuts, data }: Prop
     const existingCombination = data
       ? `Control${data.shortcutObject.shift ? ' + shift' : ''} + ${data.shortcutObject.key}`
       : '';
+    setShortcutObject(data?.shortcutObject);
     setKeyCombination(existingCombination);
     setText(data?.text || '');
   }, [data]);
