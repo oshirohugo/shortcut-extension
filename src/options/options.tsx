@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-
-import ShortcutDialog from './shortcut-dialog';
-import ShortcutsTable from './shortcuts-table';
-import { StoredShortcut, ShortcutObj, StoredShortcutValue } from '../types';
-import { shortcutObjectMock } from './shortcut-mock'; // TODO remove this
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import ShortcutsTab from './shortcuts-tab';
+import SitesTab from './sites-tab';
 
 const useStyles = makeStyles({
   container: {
@@ -31,107 +26,56 @@ const useStyles = makeStyles({
   },
 });
 
+type TabPanelProps = {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+};
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <>{children}</>}
+    </div>
+  );
+}
+
+function a11yProps(index: any) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 function Options() {
   const classes = useStyles();
-  const [openShortcutDialog, setOpenShortcutDialog] = useState(false);
-  const [dataToEdit, setDataToEdit] = useState<StoredShortcutValue | undefined>();
+  const [tabIndex, setTabIndex] = useState(1);
 
-  const handleShortcutDialogClose = () => {
-    setOpenShortcutDialog(false);
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setTabIndex(newValue);
   };
-
-  const onAddShortcutButtonClick = () => {
-    setOpenShortcutDialog(true);
-  };
-
-  const [shortcuts, setShortcuts] = useState<StoredShortcut>(shortcutObjectMock);
-
-  const handleShortcutSave = (shortcutObject: ShortcutObj, text: string) => {
-    const { shift, keyCode, numpad } = shortcutObject;
-    const newShortcuts = {
-      ...shortcuts,
-      [`${shift}${keyCode}${numpad}`]: { text, shortcutObject, created: new Date().getTime() },
-    };
-
-    setShortcuts(newShortcuts);
-    chrome.storage?.sync.set({ shortcuts: newShortcuts }, handleShortcutDialogClose);
-    setDataToEdit(undefined);
-    handleShortcutDialogClose();
-  };
-
-  const onShortcutDeleteClick = (shortcutObject: ShortcutObj) => {
-    const { shift, keyCode, numpad } = shortcutObject;
-    const shortcutHash = `${shift}${keyCode}${numpad}`;
-    const newShortcuts = { ...shortcuts };
-    delete newShortcuts[shortcutHash];
-
-    setShortcuts(newShortcuts);
-
-    chrome.storage?.sync.set({ shortcuts: newShortcuts });
-  };
-
-  const onShortcutEdit = (shortcutData: StoredShortcutValue) => {
-    setDataToEdit(shortcutData);
-    setOpenShortcutDialog(true);
-  };
-
-  const onDelete = (selectedShortcuts: Record<string, boolean>) => {
-    const hashes = Object.keys(selectedShortcuts);
-    const newShortcuts = { ...shortcuts };
-
-    hashes.forEach((hash) => delete newShortcuts[hash]);
-
-    setShortcuts(newShortcuts);
-    if (chrome.storage) {
-      chrome.storage.sync.set({ shortcuts: newShortcuts });
-    }
-  };
-
-  useEffect(() => {
-    if (chrome.storage) {
-      chrome.storage.sync.get('shortcuts', (data) => {
-        setShortcuts(data.shortcuts);
-      });
-    }
-  }, []);
-
-  const shortcutsArray = shortcuts
-    ? Object.keys(shortcuts as any).map((key) => shortcuts[key])
-    : [];
 
   return (
     <section className={classes.container}>
       <div className={classes.content}>
-        <Typography variant="h4">Stored Shortcuts</Typography>
-        <Paper>
-          {shortcutsArray.length ? (
-            <ShortcutsTable
-              shortcuts={shortcutsArray}
-              onShortcutDelete={onShortcutDeleteClick}
-              onShortcutEdit={onShortcutEdit}
-              onSelectedDelete={onDelete}
-            />
-          ) : (
-            <Typography color="textSecondary" className={classes.emptyMessage}>
-              No shortcuts stored. Click the button to add a shortcut.
-            </Typography>
-          )}
-        </Paper>
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={onAddShortcutButtonClick}
-          className={classes.button}
-        >
-          <AddIcon />
-        </Fab>
-        <ShortcutDialog
-          open={openShortcutDialog}
-          handleSave={handleShortcutSave}
-          handleClose={handleShortcutDialogClose}
-          shortcuts={shortcuts}
-          data={dataToEdit}
-        />
+        <Tabs value={tabIndex} onChange={handleChange} aria-label="simple tabs example">
+          <Tab label="Shorcuts" {...a11yProps(0)} />
+          <Tab label="Manage Websites" {...a11yProps(1)} />
+        </Tabs>
+        <TabPanel value={tabIndex} index={0}>
+          <ShortcutsTab />
+        </TabPanel>
+        <TabPanel value={tabIndex} index={1}>
+          <SitesTab />
+        </TabPanel>
       </div>
     </section>
   );

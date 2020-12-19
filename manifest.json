@@ -1,6 +1,6 @@
 {
   "name": "Shortcuts",
-  "version": "1.0",
+  "version": "0.0.1",
   "description": "Text shortcuts",
   "permissions": ["activeTab", "tabs", "http://*/", "https://*/", "declarativeContent", "storage"],
   "background": {

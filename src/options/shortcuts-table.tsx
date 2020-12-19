@@ -67,7 +67,7 @@ function ShortcutsTable({ shortcuts, onShortcutDelete, onShortcutEdit, onSelecte
   const onDeleteClick = () => onSelectedDelete(selectedShortcuts);
 
   return (
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell>

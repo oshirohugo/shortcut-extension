@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/styles';
 
 type Props = {
   anchorEl: HTMLElement | null;
@@ -13,7 +14,15 @@ type Props = {
   handleEdit: () => void;
 };
 
+const useStyles = makeStyles({
+  menu: {
+    width: '8rem',
+  },
+});
+
 function ActionsMenu({ anchorEl, handleClose, handleDelete, handleEdit }: Props) {
+  const classes = useStyles();
+
   return (
     <Menu
       id="simple-menu"
@@ -21,17 +30,14 @@ function ActionsMenu({ anchorEl, handleClose, handleDelete, handleEdit }: Props)
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}
+      classes={{
+        paper: classes.menu,
+      }}
     >
       <MenuItem onClick={handleEdit}>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
         <ListItemText primary="Edit" />
       </MenuItem>
       <MenuItem onClick={handleDelete}>
-        <ListItemIcon>
-          <DeleteIcon />
-        </ListItemIcon>
         <ListItemText primary="Delete" />
       </MenuItem>
     </Menu>
