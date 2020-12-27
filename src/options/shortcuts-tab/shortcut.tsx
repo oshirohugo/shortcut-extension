@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 import { ShortcutObj, StoredShortcutValue } from './types';
 import Tooltip from '@material-ui/core/Tooltip';
-import ActionsMenu from '../actions-menu';
+import ActionsMenu from '../common/actions-menu';
 
 const useStyles = makeStyles({
   textCell: {
@@ -32,28 +32,9 @@ type Props = {
 
 function Shortcut({ data, onDelete, onEdit, onSelect, selected }: Props) {
   const classes = useStyles();
-  const [actionsAnchorEl, setActionsAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const { shift, key } = data.shortcutObject;
   const { text, created } = data;
-
-  const onActionsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setActionsAnchorEl(event.currentTarget);
-  };
-
-  const handleActionsClose = () => {
-    setActionsAnchorEl(null);
-  };
-
-  const handleDelete = () => {
-    onDelete(data.shortcutObject);
-    handleActionsClose();
-  };
-
-  const handleEdit = () => {
-    onEdit(data);
-    handleActionsClose();
-  };
 
   const handleSelect = () => {
     onSelect(data.shortcutObject);
@@ -70,14 +51,11 @@ function Shortcut({ data, onDelete, onEdit, onSelect, selected }: Props) {
       </Tooltip>
       <TableCell>{new Date(created).toLocaleString()}</TableCell>
       <TableCell>
-        <IconButton onClick={onActionsClick}>
-          <MoreVertIcon />
-        </IconButton>
-        <ActionsMenu
-          anchorEl={actionsAnchorEl}
-          handleClose={handleActionsClose}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
+        <ActionsMenu<ShortcutObj, StoredShortcutValue>
+          onDelete={onDelete}
+          onEdit={onEdit}
+          toEdit={data}
+          toDelete={data.shortcutObject}
         />
       </TableCell>
     </TableRow>
