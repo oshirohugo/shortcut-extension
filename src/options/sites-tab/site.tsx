@@ -5,7 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core';
-import ActionsMenu from './actions-menu';
+import ActionsMenu from '../actions-menu';
 
 type Props = {
   url: string;

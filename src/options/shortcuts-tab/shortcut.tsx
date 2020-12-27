@@ -6,9 +6,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import { ShortcutObj, StoredShortcutValue } from '../types';
+import { ShortcutObj, StoredShortcutValue } from './types';
 import Tooltip from '@material-ui/core/Tooltip';
-import ActionsMenu from './actions-menu';
+import ActionsMenu from '../actions-menu';
 
 const useStyles = makeStyles({
   textCell: {

@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import Shortcut from './shortcut';
-import { StoredShortcutValue } from '../types';
+import { StoredShortcutValue } from './types';
 
 type Props = {
   shortcuts: StoredShortcutValue[];
